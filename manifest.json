@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "羽毛球空场 · 清华",
+  "version": "1.1.0",
+  "description": "按球馆和时段查询清华羽毛球空场，定时通知，并定位到官方预约页面。",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "alarms", "notifications"],
+  "optional_permissions": ["scripting"],
+  "optional_host_permissions": ["https://id.tsinghua.edu.cn/*"],
+  "host_permissions": ["https://www.sports.tsinghua.edu.cn/*"],
+  "background": {"service_worker": "background.mjs", "type": "module"},
+  "action": {"default_popup": "popup.html", "default_title": "羽毛球空场", "default_icon": {"16": "icons/16.png", "32": "icons/32.png"}},
+  "icons": {"16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png"},
+  "content_scripts": [{"matches": ["https://www.sports.tsinghua.edu.cn/venue/*"], "js": ["content.js"], "run_at": "document_idle"}]
+}

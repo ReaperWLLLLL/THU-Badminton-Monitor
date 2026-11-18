@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>羽毛球空场</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+<main class="app">
+  <header><h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m7 17 8-14 3 2-7 14M9 18 19 9l3 3-11 8M6 16 9 2l4 1-3 15"/><path d="M4 16a3 3 0 0 0 4 4l3-3-4-4Z"/></svg>羽毛球空场</h1><button id="login" class="login" title="打开官方登录页面"><span id="login-dot" class="dot"></span><span id="login-text">未登录</span></button></header>
+  <nav class="tabs" aria-label="功能页签"><button id="results-tab" class="selected" aria-selected="true">空场</button><button id="settings-tab" aria-selected="false">筛选设置</button><button id="login-tab" aria-selected="false">自动登录</button></nav>
+  <div id="feedback" role="status" hidden></div>
+  <section id="results-panel" aria-labelledby="results-tab">
+    <div class="auto-row"><label for="enabled">自动查询</label><input id="enabled" class="switch" type="checkbox" role="switch"><span id="interval-label" class="muted"></span></div>
+    <div class="refresh-row"><div><span id="updated">尚未查询</span><div id="next-query" class="muted small"></div></div><button id="refresh" class="outline">立即查询</button></div>
+    <div id="run-status" class="notice" role="status" hidden></div>
+    <div id="date-tabs" class="date-tabs" aria-label="预约日期"></div>
+    <div id="summary" class="summary"></div>
+    <div id="slots" class="slots"></div>
+    <footer>在官方页面确认并预约</footer>
+  </section>
+  <section id="settings-panel" aria-labelledby="settings-tab" hidden>
+    <form id="settings-form">
+      <fieldset><legend>查询球馆</legend><div id="venue-options" class="venue-options"></div></fieldset>
+      <fieldset class="time-fields"><legend>开始时间</legend>
+        <div class="time-row"><label for="weekdayStart">工作日</label><input id="weekdayStart" name="weekdayStart" type="time" required aria-label="工作日最早开始时间"><span>–</span><input id="weekdayEnd" name="weekdayEnd" type="time" required aria-label="工作日最晚开始时间"></div>
+        <div class="time-row"><label for="weekendStart">周末</label><input id="weekendStart" name="weekendStart" type="time" required aria-label="周末最早开始时间"><span>–</span><input id="weekendEnd" name="weekendEnd" type="time" required aria-label="周末最晚开始时间"></div>
+        <p class="muted small">按场次开始时间筛选，包含起止边界</p>
+      </fieldset>
+      <div class="setting-row"><label for="intervalMinutes">查询间隔</label><div><input id="intervalMinutes" name="intervalMinutes" type="number" min="5" max="1440" step="1" required> <span class="muted">分钟</span></div></div>
+      <div class="setting-row"><label for="notifications">发现空场时通知</label><input id="notifications" name="notifications" class="switch" type="checkbox" role="switch"></div>
+      <button id="save" class="primary" type="submit">保存设置</button>
+    </form>
+  </section>
+  <section id="login-panel" aria-labelledby="login-tab" hidden>
+    <form id="login-form" autocomplete="off">
+      <div class="setting-row"><label for="auto-login-enabled">开启自动登录</label><input id="auto-login-enabled" class="switch" type="checkbox" role="switch"></div>
+      <p class="muted small">登录态失效时，通过官网重新登录并继续查询。</p>
+      <div id="login-config-fields" class="login-fields">
+        <label for="login-username">账号</label><input id="login-username" name="username" type="text" autocomplete="off" spellcheck="false" maxlength="128" placeholder="统一身份认证账号">
+        <label for="login-password">密码</label><input id="login-password" name="password" type="password" autocomplete="new-password" maxlength="1024" placeholder="请输入密码">
+        <label for="login-totp">TOTP 密钥</label><input id="login-totp" name="totpSecret" type="password" autocomplete="new-password" spellcheck="false" maxlength="256" placeholder="Base32 密钥，不是六位动态码">
+      </div>
+      <p class="muted small privacy-note">凭据保存在当前浏览器本地，不同步到云端；本地存储未加密。TOTP 动态码在插件后台生成。</p>
+      <div id="auto-login-status" class="notice" role="status" hidden></div>
+      <div class="login-actions"><button id="save-login" class="primary" type="submit">保存配置</button><button id="save-and-login" class="outline" type="submit" value="login">保存并登录</button></div>
+      <button id="clear-login" class="text-button" type="button">清除已存凭据</button>
+    </form>
+  </section>
+</main><script type="module" src="popup.mjs"></script>
+</body></html>

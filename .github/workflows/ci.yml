@@ -1,0 +1,46 @@
+name: Extension checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  javascript:
+    name: JavaScript tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run logic tests
+        run: node --test tests/chrome_extension.test.mjs
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check background.mjs
+          node --check content.js
+          node --check login-content.js
+          node --check popup.mjs
+          find lib -name '*.mjs' -print0 | xargs -0 -n1 node --check
+
+  release:
+    name: Release checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run release-check tests
+        run: python -m unittest discover -s tests -p 'test_release_check.py'
+      - name: Check public source
+        run: python scripts/check_release.py
+      - name: Build and verify public archive
+        run: |
+          python scripts/package_extension.py
+          python scripts/check_release.py --archive dist/autobook-chrome-extension.zip

@@ -1,0 +1,25 @@
+# Local build output
+dist/
+*.zip
+
+# Node and Python caches
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Browser and test state
+chrome-profile/
+test-profile/
+screenshots/
+*.trace.zip
+
+# Editor and operating-system files
+.DS_Store
+.vscode/
+.idea/
+
+# Local environment files
+.env
+.env.*
+*.local
